@@ -1,5 +1,5 @@
 .message {
-    width: 100%;
+    width: 80%;
     min-height: 1px;
     padding: 10px;
     border-radius: 5px;
@@ -7,6 +7,14 @@
     flex-direction: column;
     margin-bottom: 5px;
 }
+
+.message.system {
+    background-color: #49acc0;
+    width: 100%;
+    text-align: center;
+    color: white;
+}
+
 .message.they {
     background-color: #c9c6c6;
 }
@@ -18,6 +26,7 @@
 }
 .message.me {
     background-color: #cadb2c;
+    float: right;
 }
 .message.me .message-header {
     color: #ffffff;

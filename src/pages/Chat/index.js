@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
+import api from '../../services/api';
+import io from 'socket.io-client';
 
 import MessageBubbly from '../../components/MessageBubbly';
 
-import { Row, Col, InputGroup, InputGroupAddon, InputGroupText, Input, Button } from 'reactstrap';
+import { Row, Col, InputGroup, Input, Button } from 'reactstrap';
 
 import './styles.css'
 
@@ -15,15 +17,69 @@ export default class Chat extends Component {
             redirect: '',
 
             messages: [],
-            userData: {},
+            username: localStorage.getItem('username'),
 
             message: ''
         };
+
+        if(this.state.username) {
+            const socket = io('http://localhost:2020');
+            
+            socket.on('roomMoves', data => {
+                let messages = this.state.messages;
+                messages.push(data);
+                this.setState({messages});
+            });
+            socket.on('newMessage', data => {
+                let messages = this.state.messages;
+                messages.push(data);
+                this.setState({messages});
+            })
+        }
     }
 
-    handleExit = () => {
-        localStorage.clear();
-        this.setState({redirect: '/'});
+    setupRoom = async () => {
+        let response = await api.get('/room');
+        if(response.status === 200) {
+            let messages = response.data;
+            this.setState({messages});
+        }
+    }
+
+    handleSendMessage = async (e) => {
+        e.preventDefault();
+        let response = await api.post('/room/message', { senderName: this.state.username, text: this.state.message });
+        if(response.status === 200) {
+            this.setState({ message: '' });
+        } else {
+            alert('Ocorreu um erro durante o envio da mensagem');
+        }
+    }
+
+    handleExit = async () => {
+        let response = await api.post('/session/exit', { username: this.state.username });
+        if(response.status === 200) {
+            localStorage.clear();
+            window.location.reload();
+        }
+    }
+
+    scrollToBottom = () => {
+        this.messagesEnd.scrollIntoView({ behavior: "smooth" });
+    }
+
+    componentWillMount = () => {
+        document.title = "Gyrachat - Sala de Bate-papo"
+        if(!this.state.username) this.setState({redirect: '/'})
+        else this.setupRoom();
+    }
+
+    componentDidMount = () => {
+        this.scrollToBottom();
+    }
+      
+      componentDidUpdate = () => {
+        this.scrollToBottom();
     }
 
     render() {
@@ -42,13 +98,30 @@ export default class Chat extends Component {
                                 <span>Sala de bate-papo geral</span>
                                 <div className="room-status"></div> {/* up || down */}
                             </div>
-                            <div className="messages-area">
+                            <div id="message-area" className="messages-area">
+                                {
+                                    this.state.messages.map((msg, i) => {
+                                        return (
+                                            <MessageBubbly key={i}
+                                                system={msg.senderName === 'system'}
+                                                me={msg.senderName === this.state.username ? true : false}
+                                                name={msg.senderName}
+                                                text={msg.text}
+                                                date={msg.senderName === 'system' ? new Date() : msg.createdAt} 
+                                            />
+                                        )
+                                    })
+                                }
+                                <div style={{ float:"left", clear: "both" }}
+                                    ref={(el) => { this.messagesEnd = el; }}>
+                                </div>
                                 {/* <MessageBubbly me name="Dayvid" date={new Date()} text="Oi amor! Tudo bem ?" />
                                 <MessageBubbly name="Bruna" date={new Date()} text="Tudo ótimo! E com você?" />
-                                <MessageBubbly me name="Dayvid" date={new Date()} text="Estou ótimo! Que bom que está tudo bem!" /> */}
+                                <MessageBubbly me name="Dayvid" date={new Date()} text="Estou ótimo! Que bom que está tudo bem!" />
+                                <MessageBubbly system text="Akira entrou na sala" /> */}
                             </div>
                             <div className="user-area">
-                                <form>
+                                <form onSubmit={this.handleSendMessage}>
                                     <InputGroup className="user-message">
                                         <Input type="textarea" rows="2" placeholder="Mensagem" value={this.state.message} onChange={(e) => {this.setState({message: e.target.value})}}/>
                                     </InputGroup>

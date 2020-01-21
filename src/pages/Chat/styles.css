@@ -57,6 +57,7 @@
     height: 78%;
     padding: 10px;
     overflow-y: auto;
+    white-space: pre-wrap;
 }
 
 .chat-container .chat-box .user-area {

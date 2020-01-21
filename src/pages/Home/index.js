@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
+import api from '../../services/api';
 
 import { Row, Col, InputGroup, InputGroupAddon, InputGroupText, Input, Button } from 'reactstrap';
 
@@ -16,13 +17,20 @@ export default class Home extends Component {
         };
     }
 
-    handleEntry = (e) => {
+    handleEntry = async (e) => {
         e.preventDefault();
-        this.setState({redirect: '/chat'});
+        let response = await api.post('/session/entry', { username: this.state.username });
+        if(response.status === 200) {
+            localStorage.setItem('username', this.state.username);
+            this.setState({redirect: '/chat'});
+        } else {
+            alert('Ocorreu algum erro');
+        }
     }
 
     componentWillMount = () => {
         document.title = "GyraChat - Lobby"
+        if(localStorage.getItem('username')) this.setState({redirect: '/chat'})
     }
 
     render() {
