@@ -6,6 +6,11 @@ import { Row, Col } from 'reactstrap';
 import './styles.css'
 
 export default class NotFound extends Component {
+
+    componentWillMount = () => {
+        document.title = "Página não encontrada";
+    }
+
     render() {
         return (
             <div className="notfound-container">
