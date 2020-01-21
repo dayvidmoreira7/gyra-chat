@@ -15,6 +15,7 @@ export default class Chat extends Component {
         super();
         this.state = {
             redirect: '',
+            status: false,
 
             messages: [],
             username: localStorage.getItem('username'),
@@ -42,7 +43,7 @@ export default class Chat extends Component {
         let response = await api.get('/room');
         if(response.status === 200) {
             let messages = response.data;
-            this.setState({messages});
+            this.setState({messages, status: true});
         }
     }
 
@@ -96,7 +97,7 @@ export default class Chat extends Component {
                                     <path d="M0 0h24v24H0z" fill="none"/></svg>
                                 </Button>
                                 <span>Sala de bate-papo geral</span>
-                                <div className="room-status"></div> {/* up || down */}
+                                <div className={`room-status ${this.state.status ? 'up' : 'down'}`}></div> {/* up || down */}
                             </div>
                             <div id="message-area" className="messages-area">
                                 {
