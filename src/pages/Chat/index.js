@@ -24,7 +24,7 @@ export default class Chat extends Component {
         };
 
         if(this.state.username) {
-            const socket = io('http://localhost:2020');
+            const socket = io('https://gyra-chat-api.herokuapp.com');
             
             socket.on('roomMoves', data => {
                 let messages = this.state.messages;
