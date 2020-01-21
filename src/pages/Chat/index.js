@@ -15,6 +15,7 @@ export default class Chat extends Component {
         super();
         this.state = {
             redirect: '',
+            loading: false,
             status: false,
 
             messages: [],
@@ -49,12 +50,14 @@ export default class Chat extends Component {
 
     handleSendMessage = async (e) => {
         e.preventDefault();
+        this.setState({loading: true});
         let response = await api.post('/room/message', { senderName: this.state.username, text: this.state.message });
         if(response.status === 200) {
             this.setState({ message: '' });
         } else {
             alert('Ocorreu um erro durante o envio da mensagem');
         }
+        this.setState({loading: false});
     }
 
     handleExit = async () => {
@@ -124,9 +127,9 @@ export default class Chat extends Component {
                             <div className="user-area">
                                 <form onSubmit={this.handleSendMessage}>
                                     <InputGroup className="user-message">
-                                        <Input type="textarea" rows="2" placeholder="Mensagem" value={this.state.message} onChange={(e) => {this.setState({message: e.target.value})}}/>
+                                        <Input disabled={!this.state.status || this.state.loading} type="textarea" rows="2" placeholder="Mensagem" value={this.state.message} onChange={(e) => {this.setState({message: e.target.value})}}/>
                                     </InputGroup>
-                                    <Button disabled={this.state.message.length < 1} type="submit" className="user-send" color="secondary">
+                                    <Button disabled={this.state.message.length < 1 || this.state.loading} type="submit" className="user-send" color="secondary">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
                                             <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/><path d="M0 0h24v24H0z" fill="none"/>
                                         </svg>
