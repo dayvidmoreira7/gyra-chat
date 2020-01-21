@@ -1,0 +1,21 @@
+.notfound-container {
+    background-image: -webkit-linear-gradient(left, #cadb2c, #49acc0);
+    width: 100vw;
+    min-height: 100vh;
+    color: white;
+}
+.notfound-container .text {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    min-height: 100vh;
+}
+.notfound-container .text h2 {
+    width: 80%;
+    text-align: center;
+}
+.notfound-container .text .back-button {
+    color: white;
+    margin-top: 50px;
+}

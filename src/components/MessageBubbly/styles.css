@@ -1,0 +1,32 @@
+.message {
+    width: 100%;
+    min-height: 1px;
+    padding: 10px;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 5px;
+}
+.message.they {
+    background-color: #c9c6c6;
+}
+.message.they .message-header {
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: 700;
+    width: 100%;
+}
+.message.me {
+    background-color: #cadb2c;
+}
+.message.me .message-header {
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: 700;
+    width: 100%;
+    text-align: right;
+}
+.message.me .message-body {
+    width: 100%;
+    text-align: right;
+}

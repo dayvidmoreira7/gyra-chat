@@ -1,0 +1,30 @@
+.home-container {
+    background-image: -webkit-linear-gradient(left, #cadb2c, #49acc0);
+    width: 100vw;
+    min-height: 100vh;
+    color: white;
+}
+.home-container .entrance {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    min-height: 100vh;
+}
+.home-container .entrance form {
+    width: 80%;
+    margin-top: 50px;
+}
+.home-container .entrance h2 {
+    width: 80%;
+    text-align: center;
+}
+.home-container .entrance form .input {
+    margin-bottom: 10px;
+}
+
+.home-container .highlight-text {
+    color: #6d6f72;
+    font-weight: 700;
+    font-size: 40px;
+}
