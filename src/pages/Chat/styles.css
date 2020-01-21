@@ -20,7 +20,36 @@
     border-top-right-radius: 5px;
     display: flex;
     align-items: center;
+    justify-content: space-between;
     padding: 0 10px;
+}
+.chat-container .chat-box .room-area .close-button {
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 10px;
+}
+.chat-container .chat-box .room-area .close-button svg {
+    fill: white;
+    transform: scale(5) translateY(-0.5px);
+}
+.chat-container .chat-box .room-area .room-status {
+    background-color: rgb(160, 160, 160);
+    box-shadow: 2px 2px 5px 1px rgba(158, 158, 158, 0.582);
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+}
+.chat-container .chat-box .room-area .room-status.up {
+    background-color: rgb(43, 255, 0);
+    box-shadow: 2px 2px 5px 1px rgba(55, 216, 23, 0.582);
+}
+.chat-container .chat-box .room-area .room-status.down {
+    background-color: rgb(255, 0, 0);
+    box-shadow: 2px 2px 5px 1px rgba(216, 23, 23, 0.582);
 }
 
 .chat-container .chat-box .messages-area {
@@ -58,4 +87,12 @@
 }
 .chat-container .chat-box .user-area form .user-send svg {
     fill: #49acc0;
+}
+
+@media(max-width: 575px) {
+    .chat-container .chat-box {
+        height: 100vh;
+        margin-top: 0;
+        border-radius: 0;
+    }
 }
